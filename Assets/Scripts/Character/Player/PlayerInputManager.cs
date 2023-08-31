@@ -43,6 +43,20 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleMoveInput();
     }
+    private void OnApplicationFocus(bool focus)
+    {
+        if(enabled)
+        {
+            if(focus)
+            {
+                playerControls.Enable();
+            }
+            else
+            {
+                playerControls.Disable();
+            }
+        }
+    }
     private void OnSceneChanged(Scene oldScene, Scene newScene)
     {
         if (newScene.buildIndex == WorldSaveGameManager.instance.worldSceneIndex)
@@ -54,7 +68,6 @@ public class PlayerInputManager : MonoBehaviour
             instance.enabled = false;
         }
     }
-    
     private void HandleMoveInput()
     {
         verticalInput = movementInput.y;
