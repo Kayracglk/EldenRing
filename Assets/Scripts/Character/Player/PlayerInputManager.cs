@@ -20,7 +20,6 @@ public class PlayerInputManager : MonoBehaviour
     public float cameraVerticalInput;
     public float cameraHorizontalInput;
 
-
     private void OnEnable()
     {
         if (playerControls == null)
