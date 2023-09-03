@@ -7,12 +7,19 @@ public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
 
+    private PlayerControls playerControls;
+
+    [Header("MOVEMENT INPUT")]
     [SerializeField] private Vector2 movementInput;
     public float verticalInput;
     public float horizontalInput;
     public float moveAmount;
 
-    private PlayerControls playerControls;
+    [Header("CAMERA MOVEMENT INPUT")]
+    [SerializeField] private Vector2 cameraInput;
+    public float cameraVerticalInput;
+    public float cameraHorizontalInput;
+
 
     private void OnEnable()
     {
@@ -21,6 +28,7 @@ public class PlayerInputManager : MonoBehaviour
             playerControls = new PlayerControls();
 
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+            playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
         }
         playerControls.Enable();
     }
@@ -41,7 +49,8 @@ public class PlayerInputManager : MonoBehaviour
     }
     private void Update()
     {
-        HandleMoveInput();
+        HandlePlayerMovementInput();
+        HandleCameraMovementInput();
     }
     private void OnApplicationFocus(bool focus)
     {
@@ -68,7 +77,7 @@ public class PlayerInputManager : MonoBehaviour
             instance.enabled = false;
         }
     }
-    private void HandleMoveInput()
+    private void HandlePlayerMovementInput()
     {
         verticalInput = movementInput.y;
         horizontalInput = movementInput.x;
@@ -82,8 +91,13 @@ public class PlayerInputManager : MonoBehaviour
         {
             moveAmount = 1;
         }
-    }
+    } 
+    private void HandleCameraMovementInput()
+    {
+        cameraVerticalInput = cameraInput.y;
+        cameraHorizontalInput = cameraInput.x;
 
+    }
     private void OnDestroy()
     {
         SceneManager.activeSceneChanged -= OnSceneChanged;
