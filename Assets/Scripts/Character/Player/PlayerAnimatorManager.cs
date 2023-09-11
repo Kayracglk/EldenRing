@@ -15,7 +15,7 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
     {
         if(player.applyRootMotion)
         {
-            Vector3 velocity = player.animator.deltaPosition;
+            Vector3 velocity = new Vector3(player.animator.deltaPosition.x, 0, player.animator.deltaPosition.z);
             player.characterController.Move(velocity);
             player.transform.rotation *= player.animator.deltaRotation;
         }

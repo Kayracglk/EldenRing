@@ -118,7 +118,7 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
         }
         else
         {
-            // BACKSTEP ANIMATION
+            player.playerAnimatorManager.PlayTargetActionAnimation("Dodging_Back", true, true);
         }
     }
 }
