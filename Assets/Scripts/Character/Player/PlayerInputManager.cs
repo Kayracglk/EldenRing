@@ -23,6 +23,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("PLAYER ACTIONS INPUT")]
     [SerializeField] private bool dogdeInput = false;
+    [SerializeField] private bool sprintInput = false;
 
     private void OnEnable()
     {
@@ -33,6 +34,9 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
             playerControls.PlayerActions.Dodge.performed += i => dogdeInput = true;
+            playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
+            playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+
         }
         playerControls.Enable();
     }
@@ -56,6 +60,7 @@ public class PlayerInputManager : MonoBehaviour
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
         HandleDodgeInput();
+        HandleSprintInput();
     }
     private void OnApplicationFocus(bool focus)
     {
@@ -100,7 +105,7 @@ public class PlayerInputManager : MonoBehaviour
         if (player == null)
             return;
 
-        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
     } 
     private void HandleCameraMovementInput()
     {
@@ -116,6 +121,18 @@ public class PlayerInputManager : MonoBehaviour
             player.playerLocomotionManager.AttemptToPerformDodge();
         }
     }
+    private void HandleSprintInput()
+    {
+        if (sprintInput)
+        {
+            player.playerLocomotionManager.HandleSpriting();
+        }
+        else
+        {
+            player.playerNetworkManager.isSprinting.Value = false;
+        }
+    }
+
     private void OnDestroy()
     {
         SceneManager.activeSceneChanged -= OnSceneChanged;

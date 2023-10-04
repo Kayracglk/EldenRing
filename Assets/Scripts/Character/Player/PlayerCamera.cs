@@ -80,6 +80,7 @@ public class PlayerCamera : MonoBehaviour
         targetCameraZPosition = cameraZPosition;
         RaycastHit hit;
         Vector3 direction = cameraObject.transform.position - cameraPivotTransform.position;
+        print(direction);
         direction.Normalize();
 
         if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionRadius, direction, out hit, Mathf.Abs(targetCameraZPosition), collideWithLayers))
@@ -94,6 +95,5 @@ public class PlayerCamera : MonoBehaviour
         
         cameraObjectPosition.z = Mathf.Lerp(cameraObject.transform.localPosition.z, targetCameraZPosition, 0.2f);
         cameraObject.transform.localPosition = cameraObjectPosition;
-
     }
 }

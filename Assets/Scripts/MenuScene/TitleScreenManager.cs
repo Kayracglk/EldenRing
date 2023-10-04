@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TitleScreenManager : MonoBehaviour
 {
+    [SerializeField] private GameObject titleScreenMainMenu;
+    [SerializeField] private GameObject titleScreenLoadMenu;
     public void StartNetworkAsHost()
     {
         NetworkManager.Singleton.StartHost();
@@ -12,6 +14,13 @@ public class TitleScreenManager : MonoBehaviour
 
     public void StartNewGame()
     {
-        StartCoroutine(WorldSaveGameManager.instance.LoadNewGame());
+        WorldSaveGameManager.instance.CreateNewGame();
+        StartCoroutine(WorldSaveGameManager.instance.LoadWorldScene());
+    }
+
+    public void OpenLoadGame()
+    {
+        titleScreenMainMenu.SetActive(false);
+        titleScreenLoadMenu.SetActive(true);
     }
 }
